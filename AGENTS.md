@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- The site is a literal port of an approved static HTML file: src/styles.css holds its CSS verbatim (no Tailwind import/preflight) and components use its Portuguese class names; why: pixel fidelity to the approved design.

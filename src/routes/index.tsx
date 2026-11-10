@@ -1,23 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Site } from "@/components/site/Site";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITULO = "Grupo Kurihara & Figueiredo | Conglomerado jurídico-empresarial";
+const DESC =
+  "O Grupo Kurihara & Figueiredo é um conglomerado de empresas voltado à área jurídico-empresarial: assessoria jurídica, contábil, financeira, patrimonial, SST, certificado digital, marcas e patentes. Ribeirão Preto e Morro Agudo, SP.";
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: TITULO },
+      { name: "description", content: DESC },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "pt_BR" },
+      { property: "og:title", content: "Grupo Kurihara & Figueiredo" },
+      { property: "og:description", content: "Conglomerado de empresas voltado à área jurídico-empresarial. Ribeirão Preto e Morro Agudo, SP." },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: Site,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}

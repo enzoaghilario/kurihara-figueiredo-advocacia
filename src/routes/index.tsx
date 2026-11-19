@@ -1,19 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Site } from "@/components/site/Site";
 
-const TITULO = "Grupo Kurihara & Figueiredo | Conglomerado jurídico-empresarial";
-const DESC =
-  "O Grupo Kurihara & Figueiredo é um conglomerado de empresas voltado à área jurídico-empresarial: assessoria jurídica, contábil, financeira, patrimonial, SST, certificado digital, marcas e patentes. Ribeirão Preto e Morro Agudo, SP.";
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: TITULO },
-      { name: "description", content: DESC },
+      { title: "Grupo ZKF | Store, Engenharia e Tecnologia" },
+      {
+        name: "description",
+        content:
+          "O Grupo ZKF reúne a ZKF Store (e-commerce), a ZKF Engenharia (projetos, loteamentos, obras industriais, comerciais, casas de alto padrão e lofts) e a ZKF Tecnologia, que desenvolve a Playzo, plataforma para o esporte.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
-      { property: "og:title", content: "Grupo Kurihara & Figueiredo" },
-      { property: "og:description", content: "Conglomerado de empresas voltado à área jurídico-empresarial. Ribeirão Preto e Morro Agudo, SP." },
+      { property: "og:title", content: "Grupo ZKF" },
+      { property: "og:description", content: "ZKF Store, ZKF Engenharia e ZKF Tecnologia: três empresas, um grupo." },
       { name: "twitter:card", content: "summary" },
     ],
   }),

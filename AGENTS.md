@@ -29,4 +29,4 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- The site is a literal port of an approved static HTML file: src/styles.css holds its CSS verbatim (no Tailwind import/preflight) and components use its Portuguese class names; why: pixel fidelity to the approved design.
+- The site is a literal port of an approved static HTML file: src/styles.css holds its CSS verbatim (no Tailwind import/preflight), Site.tsx holds its markup as static JSX and runs the original script in a useEffect with AbortSignal-cleaned listeners; why: pixel and behavior fidelity to the approved design.

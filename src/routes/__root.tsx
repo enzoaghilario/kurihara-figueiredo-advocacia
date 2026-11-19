@@ -78,19 +78,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Grupo Kurihara & Figueiredo" },
-      { name: "theme-color", content: "#000000" },
+      { title: "Grupo ZKF | Store, Engenharia e Tecnologia" },
+      { name: "theme-color", content: "#0B1238" },
     ],
     links: [
       {
         rel: "icon",
-        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Crect x='12' y='12' width='7' height='40' fill='%23fff'/%3E%3Cpath d='M27 16h7v12l10-12h8L41 29l12 19h-8l-9-14-2 2v12h-7z' fill='%23fff'/%3E%3C/svg%3E",
+        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-16 -24 265 265'%3E%3Cpolygon points='116.5,0 77,67 156,67' fill='%230A9B68'/%3E%3Cpolygon points='0,201 72,78 103,78 103,201' fill='%2316258F'/%3E%3Cpolygon points='131,78 161,78 233,201 131,201' fill='%2316258F'/%3E%3C/svg%3E",
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap",
       },
       { rel: "stylesheet", href: appCss },
     ],
@@ -100,12 +100,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "ProfessionalService",
-          name: "Grupo Kurihara & Figueiredo",
-          description: "Conglomerado de empresas voltado à área jurídico-empresarial.",
+          "@type": "Organization",
+          name: "Grupo ZKF",
           telephone: "+55 16 98801-4617",
-          areaServed: ["Ribeirão Preto", "Morro Agudo"],
           sameAs: ["https://www.instagram.com/grupokuriharaefigueiredo/"],
+          subOrganization: [
+            { "@type": "Organization", name: "ZKF Store" },
+            { "@type": "Organization", name: "ZKF Engenharia" },
+            { "@type": "Organization", name: "ZKF Tecnologia" },
+          ],
         }),
       },
     ],

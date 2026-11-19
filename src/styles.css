@@ -91,16 +91,34 @@ button{background:none;border:0;padding:0;cursor:pointer}
 }
 .abertura__texto > p{margin-top:clamp(20px,2.5vw,32px);max-width:36em;font-size:clamp(1.08rem,1.4vw,1.25rem);color:var(--cinza)}
 .acoes{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:clamp(24px,3vw,36px)}
-.abertura__simbolo{width:clamp(170px,22vw,300px);height:auto;aspect-ratio:233/201;overflow:visible}
-
-/* brilho do metal: passa uma vez pelo símbolo ao abrir e quando o mouse passa por cima */
-.brilho{transform:translateX(-140px)}
-@media (prefers-reduced-motion:no-preference){
-  .abertura__simbolo .brilho{animation:brilho 1.5s cubic-bezier(.5,0,.3,1) .5s both}
-  .abertura__simbolo:hover .brilho{animation:brilho2 1.2s cubic-bezier(.5,0,.3,1) both}
+/* símbolo 3D: camadas recortadas empilhadas em profundidade (só CSS, sem biblioteca) */
+.s3d{
+  --w:clamp(190px,24vw,320px);--d:calc(var(--w) * .13);--luz:30;
+  position:relative;width:var(--w);aspect-ratio:233/201;margin:8px 12px 28px;
+  perspective:1000px;perspective-origin:50% 35%
 }
-@keyframes brilho{from{transform:translateX(-140px)}to{transform:translateX(380px)}}
-@keyframes brilho2{from{transform:translateX(-140px)}to{transform:translateX(380px)}}
+.s3d__corpo{
+  position:absolute;inset:0;transform-style:preserve-3d;
+  transform:rotateX(8deg) rotateY(-22deg)
+}
+.s3d__camada,.s3d__frente{position:absolute;inset:0;transform-style:preserve-3d}
+.s3d__camada{transform:translateZ(calc(var(--d) * (.5 - var(--t))))}
+.s3d__frente{transform:translateZ(calc(var(--d) * .5 + .5px))}
+.s3d .p{position:absolute;inset:0}
+.s3d .p--v{clip-path:polygon(50% 0,33.05% 33.33%,66.95% 33.33%)}
+.s3d .p--e{clip-path:polygon(30.9% 38.81%,44.21% 38.81%,44.21% 100%,0 100%)}
+.s3d .p--d{clip-path:polygon(56.22% 38.81%,69.1% 38.81%,100% 100%,56.22% 100%)}
+/* face da frente: metal polido com um reflexo que acompanha o giro */
+.s3d__frente .p{
+  --reflexo:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%) calc(var(--luz) * 1%) 0 / 320% 100% no-repeat
+}
+.s3d__frente .p--v{background:var(--reflexo),linear-gradient(160deg,#4BE8B0 0%,#13B47B 22%,#0A9B68 34%)}
+.s3d__frente .p--e,.s3d__frente .p--d{background:var(--reflexo),linear-gradient(160deg,#4D60DB 30%,#2135AE 52%,#16258F 74%,#0C1662 100%)}
+.s3d__sombra{
+  position:absolute;left:4%;right:4%;bottom:-13%;height:12%;
+  background:radial-gradient(closest-side,rgba(11,18,56,.30),rgba(11,18,56,0));
+  transform:scale(calc(1 + var(--f,0) * .03))
+}
 
 /* organograma */
 .organo{margin-top:clamp(48px,6vw,80px)}
@@ -300,7 +318,7 @@ legend{font-weight:650;margin-bottom:6px;padding:0}
   .empresa{scroll-margin-top:calc(var(--topo-h) + 44px)}
 
   .abertura__topo{grid-template-columns:minmax(0,1fr)}
-  .abertura__simbolo{order:-1;width:120px}
+  .s3d{order:-1;--w:150px;margin:0 0 18px 6px}
   .organo__raiz::after{left:22px}
   .organo__ramos{grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 0 0 44px}
   .organo__ramos::before{display:none}

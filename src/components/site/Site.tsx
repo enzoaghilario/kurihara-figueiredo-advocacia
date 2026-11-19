@@ -148,6 +148,74 @@ function iniciar(signal) {
   }, { signal: signal });
   form.addEventListener('submit', function (e) { e.preventDefault(); window.open(enviar.href, '_blank', 'noopener'); }, { signal: signal });
   atualizar();
+
+  /* símbolo 3D: monta as camadas de profundidade e gira devagar (segue o mouse no computador) */
+  var s3d = document.querySelector('.s3d');
+  if (s3d) {
+    var corpo = s3d.querySelector('.s3d__corpo');
+    var frente = s3d.querySelector('.s3d__frente');
+    var CAMADAS = 20;
+    var hex = function (c) { return [1, 3, 5].map(function (i) { return parseInt(c.substr(i, 2), 16); }); };
+    var mistura = function (a, b, t) {
+      a = hex(a); b = hex(b);
+      return 'rgb(' + a.map(function (v, i) { return Math.round(v + (b[i] - v) * t); }).join(',') + ')';
+    };
+    $$('.s3d__camada', corpo).forEach(function (c) { c.remove(); });
+    signal.addEventListener('abort', function () { $$('.s3d__camada', corpo).forEach(function (c) { c.remove(); }); });
+    for (var i = 0; i < CAMADAS; i++) {
+      var t = i / (CAMADAS - 1);
+      var camada = document.createElement('div');
+      camada.className = 's3d__camada';
+      camada.style.setProperty('--t', t.toFixed(3));
+      [['v', '#0B8E60', '#03402A'], ['e', '#1B2C9C', '#070C38'], ['d', '#1B2C9C', '#070C38']].forEach(function (p) {
+        var peca = document.createElement('i');
+        peca.className = 'p p--' + p[0];
+        peca.style.background = mistura(p[1], p[2], t);
+        camada.appendChild(peca);
+      });
+      corpo.insertBefore(camada, frente);
+    }
+
+    var calmo = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var atualG = { x: 8, y: -22 }, alvoG = { x: 8, y: -22 }, mouse = null, ultimoMouse = 0;
+    var rodando = false, naTela = true, inicio = performance.now();
+    var aplicar = function (flutua) {
+      corpo.style.transform = 'translateY(' + flutua.toFixed(2) + 'px) rotateX(' + atualG.x.toFixed(2) + 'deg) rotateY(' + atualG.y.toFixed(2) + 'deg)';
+      s3d.style.setProperty('--luz', (50 + atualG.y * 1.5).toFixed(1));
+      s3d.style.setProperty('--f', (flutua / 6).toFixed(3));
+    };
+    var raf = 0;
+    signal.addEventListener('abort', function () { cancelAnimationFrame(raf); });
+    var quadro = function (agora) {
+      if (signal.aborted || !naTela || calmo.matches) { rodando = false; return; }
+      var s = (agora - inicio) / 1000;
+      if (mouse && agora - ultimoMouse < 2500) { alvoG.x = mouse.x; alvoG.y = mouse.y; }
+      else { alvoG.x = 8 + Math.sin(s * 0.8) * 4; alvoG.y = -12 + Math.sin(s * 0.5) * 20; }
+      atualG.x += (alvoG.x - atualG.x) * 0.06;
+      atualG.y += (alvoG.y - atualG.y) * 0.06;
+      aplicar(Math.sin(s * 1.1) * -6);
+      raf = requestAnimationFrame(quadro);
+    };
+    var iniciar = function () {
+      if (!rodando && naTela && !calmo.matches) { rodando = true; raf = requestAnimationFrame(quadro); }
+    };
+    aplicar(0);
+    document.querySelector('.abertura').addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var r = s3d.getBoundingClientRect();
+      var dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2)));
+      var dy = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2)));
+      mouse = { x: 8 - dy * 14, y: dx * 32 };
+      ultimoMouse = performance.now();
+    }, { signal: signal });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { naTela = es[0].isIntersecting; iniciar(); });
+      io.observe(s3d);
+      signal.addEventListener('abort', function () { io.disconnect(); });
+    }
+    if (calmo.addEventListener) calmo.addEventListener('change', function () { if (calmo.matches) { atualG = { x: 8, y: -22 }; aplicar(0); } else iniciar(); }, { signal: signal });
+    iniciar();
+  }
 }
 
 export function Site() {
@@ -163,23 +231,18 @@ export function Site() {
 
 <svg className="defs" aria-hidden="true" focusable="false">
   <defs>
-    <linearGradient id="g-verde" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="150" y2="110" spreadMethod="reflect">
-      <stop offset="0" stopColor="#056A45" /><stop offset=".3" stopColor="#0F9F6F" /><stop offset=".5" stopColor="#7AF2C4" /><stop offset=".7" stopColor="#0F9F6F" /><stop offset="1" stopColor="#056A45" />
+    
+    <linearGradient id="g-verde" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stopColor="#14B57D" /><stop offset=".32" stopColor="#6EEABD" /><stop offset=".58" stopColor="#0A9B68" /><stop offset="1" stopColor="#067049" />
     </linearGradient>
-    <linearGradient id="g-azul" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="150" y2="110" spreadMethod="reflect">
-      <stop offset="0" stopColor="#0A1560" /><stop offset=".3" stopColor="#1B2EA3" /><stop offset=".5" stopColor="#7C8DF5" /><stop offset=".7" stopColor="#1B2EA3" /><stop offset="1" stopColor="#0A1560" />
+    <linearGradient id="g-azul" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stopColor="#2639B4" /><stop offset=".32" stopColor="#7486F2" /><stop offset=".58" stopColor="#16258F" /><stop offset="1" stopColor="#0C1662" />
     </linearGradient>
-    <linearGradient id="g-verde-neg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="150" y2="110" spreadMethod="reflect">
-      <stop offset="0" stopColor="#0B8A5C" /><stop offset=".3" stopColor="#16B985" /><stop offset=".5" stopColor="#9BFAD6" /><stop offset=".7" stopColor="#16B985" /><stop offset="1" stopColor="#0B8A5C" />
+    <linearGradient id="g-verde-neg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stopColor="#19C489" /><stop offset=".32" stopColor="#8EF5CF" /><stop offset=".58" stopColor="#12B47C" /><stop offset="1" stopColor="#0A8A5C" />
     </linearGradient>
-    <linearGradient id="g-prata" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="150" y2="110" spreadMethod="reflect">
-      <stop offset="0" stopColor="#9AA3BF" /><stop offset=".3" stopColor="#E4E8F3" /><stop offset=".5" stopColor="#FFFFFF" /><stop offset=".7" stopColor="#E4E8F3" /><stop offset="1" stopColor="#9AA3BF" />
-    </linearGradient>
-    <linearGradient id="g-reflexo" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stopColor="#fff" stopOpacity=".35" /><stop offset=".45" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".12" />
-    </linearGradient>
-    <linearGradient id="g-brilho" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stopColor="#fff" stopOpacity="0" /><stop offset=".5" stopColor="#fff" stopOpacity=".75" /><stop offset="1" stopColor="#fff" stopOpacity="0" />
+    <linearGradient id="g-prata" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stopColor="#C9CFE2" /><stop offset=".32" stopColor="#FFFFFF" /><stop offset=".58" stopColor="#DCE1EE" /><stop offset="1" stopColor="#A9B1CB" />
     </linearGradient>
     <g id="fv">
       <polygon points="116.5,0 77,67 156,67" />
@@ -192,28 +255,21 @@ export function Site() {
       <polygon transform="translate(401 18)" points="0,0 24,0 24,116 0,116" />
       <polygon transform="translate(401 18)" points="68,0 93,0 58,58 93,116 68,116 33,58" />
     </g>
-    <g id="grupo" transform="translate(288 155)" fill="none" strokeWidth="4.4">
+    <g id="grupo" transform="translate(288 155)" fill="none" strokeWidth="5">
       <path d="M15.2 3.4A7 7 0 1 0 16 9.5H9.5" />
       <path d="M70 18V2.2h7.8a4.4 4.4 0 0 1 0 8.8H70M77.4 11l6.6 7" />
       <path d="M145.2 0v10.6a5.8 5.8 0 0 0 11.6 0V0" />
       <path d="M220.2 18V2.2h7.4a4.6 4.6 0 0 1 0 9.2h-7.4" />
       <circle cx="297" cy="9" r="6.8" />
     </g>
-    <clipPath id="corte-simbolo">
-      <polygon points="116.5,0 77,67 156,67" />
-      <polygon points="0,201 72,78 103,78 103,201" />
-      <polygon points="131,78 161,78 233,201 131,201" />
-    </clipPath>
   </defs>
   <symbol id="logo" viewBox="0 0 594 201">
     <use href="#fv" fill="url(#g-verde)" /><use href="#fa" fill="url(#g-azul)" />
-    <use href="#fv" fill="url(#g-reflexo)" /><use href="#fa" fill="url(#g-reflexo)" />
-    <use href="#grupo" stroke="url(#g-azul)" />
+    <use href="#grupo" stroke="#16258F" />
   </symbol>
   <symbol id="logo-neg" viewBox="0 0 594 201">
     <use href="#fv" fill="url(#g-verde-neg)" /><use href="#fa" fill="url(#g-prata)" />
-    <use href="#fv" fill="url(#g-reflexo)" /><use href="#fa" fill="url(#g-reflexo)" />
-    <use href="#grupo" stroke="url(#g-prata)" />
+    <use href="#grupo" stroke="#FFFFFF" />
   </symbol>
   <symbol id="i-whats" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></symbol>
 </svg>
@@ -260,11 +316,12 @@ export function Site() {
           <a className="link" href="#socios">Conhecer os sócios</a>
         </div>
       </div>
-      <svg className="abertura__simbolo" viewBox="0 0 233 201" aria-hidden="true">
-        <use href="#fv" fill="url(#g-verde)" /><use href="#fa" fill="url(#g-azul)" />
-        <use href="#fv" fill="url(#g-reflexo)" /><use href="#fa" fill="url(#g-reflexo)" />
-        <g clipPath="url(#corte-simbolo)"><rect className="brilho" x="0" y="-10" width="90" height="221" fill="url(#g-brilho)" /></g>
-      </svg>
+      <div className="s3d" aria-hidden="true">
+        <div className="s3d__sombra"></div>
+        <div className="s3d__corpo">
+          <div className="s3d__frente"><i className="p p--v"></i><i className="p p--e"></i><i className="p p--d"></i></div>
+        </div>
+      </div>
     </div>
 
     <div className="organo" aria-label="Estrutura do Grupo ZKF">

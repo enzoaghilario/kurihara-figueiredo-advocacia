@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       {
         rel: "icon",
-        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-16 -24 265 265'%3E%3Cpolygon points='116.5,0 77,67 156,67' fill='%230A9B68'/%3E%3Cpolygon points='0,201 72,78 103,78 103,201' fill='%2316258F'/%3E%3Cpolygon points='131,78 161,78 233,201 131,201' fill='%2316258F'/%3E%3C/svg%3E",
+        href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -26 224 224'%3E%3Cpolygon points='100,0 133.33,57.7 66.67,57.7' fill='%230A9B68'/%3E%3Cpolygon points='60.91,67.7 88,67.7 88,173.2 0,173.2' fill='%2316258F'/%3E%3Cpolygon points='112,67.7 139.09,67.7 200,173.2 112,173.2' fill='%2316258F'/%3E%3C/svg%3E",
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },

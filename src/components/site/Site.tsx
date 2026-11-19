@@ -245,29 +245,29 @@ export function Site() {
       <stop offset="0" stopColor="#C9CFE2" /><stop offset=".32" stopColor="#FFFFFF" /><stop offset=".58" stopColor="#DCE1EE" /><stop offset="1" stopColor="#A9B1CB" />
     </linearGradient>
     <g id="fv">
-      <polygon points="116.5,0 77,67 156,67" />
-      <polygon transform="translate(288 18)" points="0,0 95,0 95,18 38,98 95,98 95,116 0,116 0,98 57,18 0,18" />
-      <polygon transform="translate(513 18)" points="0,0 81,0 71,20 24,20 24,48 66,48 56,68 24,68 24,116 0,116" />
+      <polygon points="100,0 133.33,57.7 66.67,57.7" />
+      <polygon transform="translate(248 16)" points="0,0 80.83,0 34.64,80 80.83,80 80.83,100 0,100 46.19,20 0,20" />
+      <polygon transform="translate(248 16)" points="192.83,0 262.83,0 251.28,20 212.83,20 212.83,40 248.83,40 237.28,60 212.83,60 212.83,100 192.83,100" />
     </g>
     <g id="fa">
-      <polygon points="0,201 72,78 103,78 103,201" />
-      <polygon points="131,78 161,78 233,201 131,201" />
-      <polygon transform="translate(401 18)" points="0,0 24,0 24,116 0,116" />
-      <polygon transform="translate(401 18)" points="68,0 93,0 58,58 93,116 68,116 33,58" />
+      <polygon points="60.91,67.7 88,67.7 88,173.2 0,173.2" />
+      <polygon points="112,67.7 139.09,67.7 200,173.2 112,173.2" />
+      <polygon transform="translate(248 16)" points="96.83,0 116.83,0 116.83,100 96.83,100" />
+      <polygon transform="translate(248 16)" points="153.7,0 176.79,0 147.92,50 176.79,100 153.7,100 124.83,50" />
     </g>
-    <g id="grupo" transform="translate(288 155)" fill="none" strokeWidth="5">
-      <path d="M15.2 3.4A7 7 0 1 0 16 9.5H9.5" />
-      <path d="M70 18V2.2h7.8a4.4 4.4 0 0 1 0 8.8H70M77.4 11l6.6 7" />
-      <path d="M145.2 0v10.6a5.8 5.8 0 0 0 11.6 0V0" />
-      <path d="M220.2 18V2.2h7.4a4.6 4.6 0 0 1 0 9.2h-7.4" />
-      <circle cx="297" cy="9" r="6.8" />
+    <g id="grupo" transform="translate(248 134)" fill="none" strokeWidth={3}>
+      <path d="M12.98 3.82A6.5 6.5 0 1 0 14.5 8H9" />
+      <path d="M65.1 16V0M65.1 1.5h6.5a3.5 3.5 0 0 1 0 7h-6.5M71.1 8.5l4.33 7.5" />
+      <path d="M126.2 0v9a5.5 5.5 0 0 0 11 0V0" />
+      <path d="M187.8 16V0M187.8 1.5h6.5a3.5 3.5 0 0 1 0 7h-6.5" />
+      <circle cx="254.9" cy="8" r="6.5" />
     </g>
   </defs>
-  <symbol id="logo" viewBox="0 0 594 201">
+  <symbol id="logo" viewBox="-1 -1 513 176">
     <use href="#fv" fill="url(#g-verde)" /><use href="#fa" fill="url(#g-azul)" />
     <use href="#grupo" stroke="#16258F" />
   </symbol>
-  <symbol id="logo-neg" viewBox="0 0 594 201">
+  <symbol id="logo-neg" viewBox="-1 -1 513 176">
     <use href="#fv" fill="url(#g-verde-neg)" /><use href="#fa" fill="url(#g-prata)" />
     <use href="#grupo" stroke="#FFFFFF" />
   </symbol>
@@ -279,7 +279,7 @@ export function Site() {
 <header className="topo" id="topo">
   <div className="caixa topo__dentro">
     <a className="marca" href="#inicio" aria-label="Grupo ZKF, voltar ao início">
-      <svg viewBox="0 0 594 201" aria-hidden="true"><use href="#logo" /></svg>
+      <svg viewBox="-1 -1 513 176" aria-hidden="true"><use href="#logo" /></svg>
     </a>
     <nav className="nav" id="menu" aria-label="Seções do site">
       <ul>
@@ -577,7 +577,7 @@ export function Site() {
 <footer className="rodape">
   <div className="caixa rodape__dentro">
     <a className="marca" href="#inicio" aria-label="Grupo ZKF, voltar ao início">
-      <svg viewBox="0 0 594 201" aria-hidden="true"><use href="#logo-neg" /></svg>
+      <svg viewBox="-1 -1 513 176" aria-hidden="true"><use href="#logo-neg" /></svg>
     </a>
     <ul>
       <li><a href="#store">ZKF Store</a></li>

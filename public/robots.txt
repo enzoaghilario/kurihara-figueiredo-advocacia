@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://grupokuriharaefigueiredo.vercel.app/sitemap.xml
